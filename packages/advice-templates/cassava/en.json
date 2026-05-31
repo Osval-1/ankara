@@ -1,0 +1,52 @@
+{
+  "healthy": {
+    "label": "Healthy cassava",
+    "opening": "Your cassava plant looks healthy.",
+    "steps": [
+      "Continue monitoring your plants weekly.",
+      "Remove any yellowing leaves promptly.",
+      "Ensure proper spacing to allow airflow."
+    ],
+    "consult": "If symptoms appear, consult your extension worker before taking action."
+  },
+  "cassava_mosaic": {
+    "label": "Cassava Mosaic Disease (CMD)",
+    "opening": "This looks like Cassava Mosaic Disease.",
+    "steps": [
+      "Remove and destroy heavily infected plants — do not compost them.",
+      "Use only clean, certified cuttings from disease-free plants for your next planting.",
+      "Control whitefly populations, which spread this disease.",
+      "Plant CMD-resistant varieties if available in your area."
+    ],
+    "consult": "Consult your extension worker before applying any chemical treatment."
+  },
+  "cassava_brown_streak": {
+    "label": "Cassava Brown Streak Disease (CBSD)",
+    "opening": "This may be Cassava Brown Streak Disease.",
+    "steps": [
+      "Do not use stems from this plant as cuttings.",
+      "Report this to your extension worker — CBSD is a priority disease for surveillance.",
+      "Remove infected plants carefully and bury or burn them away from the field."
+    ],
+    "consult": "This disease requires expert confirmation. Please consult your extension worker immediately."
+  },
+  "pest_damage": {
+    "label": "Pest damage (Green Mite or Mealybug)",
+    "opening": "Your plant shows signs of pest damage.",
+    "steps": [
+      "Inspect the underside of leaves for mites or mealybugs.",
+      "Remove heavily infested leaves and destroy them.",
+      "Encourage natural predators by avoiding broad-spectrum insecticides."
+    ],
+    "consult": "Consult your extension worker before applying any pesticide."
+  },
+  "unknown": {
+    "label": "Unclear — expert review needed",
+    "opening": "I am not confident about what this is.",
+    "steps": [
+      "Take several more photos from different angles and in good lighting.",
+      "Show the photos to your nearest extension worker or agronomist."
+    ],
+    "consult": "Do not apply any treatment until an expert has confirmed the problem."
+  }
+}

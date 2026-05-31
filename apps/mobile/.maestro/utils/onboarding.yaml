@@ -1,0 +1,9 @@
+﻿appId: ${APP_ID}
+tags:
+  - util
+---
+- assertVisible: Crop Doctor
+- assertVisible: "Let's Get Started "
+- tapOn: "Let's Get Started "
+- assertVisible: Sign In
+

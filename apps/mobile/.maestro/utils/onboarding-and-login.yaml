@@ -1,0 +1,13 @@
+﻿appId: ${APP_ID}
+tags:
+  - util
+---
+- runFlow:
+    when:
+      visible: Crop Doctor
+    file: onboarding.yaml
+- runFlow:
+    when:
+      visible: Sign In
+    file: login.yaml
+

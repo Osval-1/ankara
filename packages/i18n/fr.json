@@ -1,0 +1,37 @@
+{
+  "common": {
+    "appName": "Cameroon Crop Doctor",
+    "loading": "Chargement...",
+    "error": "Une erreur s'est produite",
+    "retry": "Réessayer",
+    "consultExpert": "Consulter un agent agricole",
+    "confidence": {
+      "low": "Faible confiance",
+      "medium": "Confiance moyenne",
+      "high": "Haute confiance"
+    },
+    "crops": {
+      "cassava": "Manioc",
+      "maize": "Maïs",
+      "plantain": "Plantain",
+      "tomato": "Tomate",
+      "cocoa": "Cacao"
+    }
+  },
+  "diagnosis": {
+    "selectCrop": "Quelle culture photographiez-vous ?",
+    "uploadPhoto": "Téléchargez une photo de la feuille ou de la plante",
+    "takingPhoto": "Prendre une photo",
+    "analyzing": "Analyse de votre photo en cours...",
+    "result": "Résultat du diagnostic",
+    "likelyIssue": "Problème probable",
+    "nextSteps": "Que faire ensuite",
+    "expertWarning": "Ceci est un conseil uniquement. Confirmez toujours avec un agent agricole avant d'agir.",
+    "lowConfidenceWarning": "Je ne suis pas confiant(e) dans ce résultat. Veuillez le montrer à un agent agricole."
+  },
+  "nav": {
+    "home": "Accueil",
+    "history": "Mes Diagnostics",
+    "settings": "Paramètres"
+  }
+}

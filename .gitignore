@@ -1,0 +1,65 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build outputs
+.next/
+out/
+dist/
+build/
+*.egg-info/
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Python virtualenvs
+.venv/
+venv/
+env/
+
+# Expo / React Native
+.expo/
+*.orig.*
+ios/
+android/
+
+# Testing
+coverage/
+.coverage
+htmlcov/
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.idea/
+*.swp
+*.swo
+
+# Docker
+*.override.yml
+
+# ML artifacts
+*.h5
+*.pb
+*.tflite
+saved_model/
+
+# Data (large files tracked via manifests, not git)
+data/raw/
+data/curated/

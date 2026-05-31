@@ -1,0 +1,19 @@
+# Crop Doctor — Caddy reverse proxy
+# Replace cropdoctor.cm with your actual domain.
+# In local dev, use localhost and comment out TLS blocks.
+
+api.cropdoctor.cm {
+    reverse_proxy localhost:8000
+}
+
+admin.cropdoctor.cm {
+    reverse_proxy localhost:3000
+}
+
+labeling.cropdoctor.cm {
+    reverse_proxy localhost:8080
+}
+
+staging.cropdoctor.cm {
+    reverse_proxy localhost:3001
+}

@@ -1,0 +1,52 @@
+{
+  "healthy": {
+    "label": "Manioc sain",
+    "opening": "Votre plant de manioc semble en bonne santé.",
+    "steps": [
+      "Continuez à surveiller vos plants chaque semaine.",
+      "Retirez rapidement les feuilles jaunissantes.",
+      "Assurez un espacement suffisant pour permettre la circulation de l'air."
+    ],
+    "consult": "Si des symptômes apparaissent, consultez votre agent agricole avant d'agir."
+  },
+  "cassava_mosaic": {
+    "label": "Mosaïque du manioc (CMD)",
+    "opening": "Ceci ressemble à la Maladie de la Mosaïque du Manioc.",
+    "steps": [
+      "Arrachez et détruisez les plants très infectés — ne les compostez pas.",
+      "Utilisez uniquement des boutures saines et certifiées pour la prochaine plantation.",
+      "Contrôlez les populations de mouches blanches, qui propagent cette maladie.",
+      "Plantez des variétés résistantes à la CMD si elles sont disponibles dans votre région."
+    ],
+    "consult": "Consultez votre agent agricole avant d'appliquer tout traitement chimique."
+  },
+  "cassava_brown_streak": {
+    "label": "Striure brune du manioc (CBSD)",
+    "opening": "Ceci pourrait être la Maladie de la Striure Brune du Manioc.",
+    "steps": [
+      "N'utilisez pas les tiges de cette plante comme boutures.",
+      "Signalez ceci à votre agent agricole — la CBSD est une maladie prioritaire de surveillance.",
+      "Arrachez les plants infectés avec précaution et enfouissez-les ou brûlez-les loin du champ."
+    ],
+    "consult": "Cette maladie nécessite une confirmation d'expert. Consultez immédiatement votre agent agricole."
+  },
+  "pest_damage": {
+    "label": "Dommages de ravageurs (Acarien vert ou Cochenille)",
+    "opening": "Votre plant présente des signes de dommages causés par des ravageurs.",
+    "steps": [
+      "Inspectez le dessous des feuilles pour détecter les acariens ou les cochenilles.",
+      "Retirez et détruisez les feuilles fortement infestées.",
+      "Favorisez les prédateurs naturels en évitant les insecticides à large spectre."
+    ],
+    "consult": "Consultez votre agent agricole avant d'appliquer tout pesticide."
+  },
+  "unknown": {
+    "label": "Incertain — avis d'expert nécessaire",
+    "opening": "Je ne suis pas sûr(e) de ce que c'est.",
+    "steps": [
+      "Prenez plusieurs photos supplémentaires sous différents angles et dans une bonne lumière.",
+      "Montrez les photos à votre agent agricole ou agronome le plus proche."
+    ],
+    "consult": "N'appliquez aucun traitement avant qu'un expert ait confirmé le problème."
+  }
+}

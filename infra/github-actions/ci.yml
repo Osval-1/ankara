@@ -1,0 +1,84 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  # ── API (FastAPI) ──────────────────────────────────────────────────────────
+  api-lint-test:
+    name: API — lint & test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: services/api
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install uv
+        run: pip install uv
+      - name: Install dependencies
+        run: uv sync
+      - name: Lint (ruff)
+        run: uv run ruff check .
+      - name: Format check (ruff)
+        run: uv run ruff format --check .
+      - name: Type check (mypy)
+        run: uv run mypy src/
+      - name: Tests
+        run: uv run pytest tests/ -v
+        env:
+          ENVIRONMENT: test
+          POSTGRES_SERVER: localhost
+          POSTGRES_USER: cropdoctor
+          POSTGRES_PASSWORD: test
+          POSTGRES_DB: cropdoctor_test
+          SECRET_KEY: test-secret-key-32-chars-minimum!!
+
+  # ── Web (Next.js) ──────────────────────────────────────────────────────────
+  web-lint-test:
+    name: Web — lint & test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/web
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: pnpm
+          cache-dependency-path: apps/web/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm test --run
+
+  # ── Mobile (Expo) ──────────────────────────────────────────────────────────
+  mobile-lint-test:
+    name: Mobile — lint & test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/mobile
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: pnpm
+          cache-dependency-path: apps/mobile/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm test --watchAll=false

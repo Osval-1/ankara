@@ -1,0 +1,51 @@
+﻿# ðŸ”— Links:
+# Source file: https://github.com/crop-doctor/mobile/blob/master/.github/workflows/test.yml
+
+# âœï¸ Description:
+# This action is used to run unit tests
+# Runs on pull requests and pushes to  the main/master branches
+# Based on the event type:
+#   - If it's a pull request, it will run the tests and post a comment with coverage details.
+#   - If it's a push to main/master, it will run the tests and add the check to the commit.
+
+# ðŸš¨ GITHUB SECRETS REQUIRED: NONE
+
+name: Tests (jest)
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  test:
+    name: Tests (jest)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: ðŸ“¦ Checkout project repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: ðŸ“¦ Setup Node + PNPM + install deps
+        uses: ./.github/actions/setup-node-pnpm-install
+
+      - name: ðŸƒâ€â™‚ï¸ Run Tests
+        run: pnpm run test:ci
+
+      - name: Jest Coverage Comment
+        uses: MishaKav/jest-coverage-comment@main
+        if: (success() || failure()) && github.event_name == 'pull_request'
+        with:
+          coverage-summary-path: ./coverage/coverage-summary.json
+          summary-title: ðŸ’¯ Test Coverage
+          badge-title: Coverage
+          create-new-comment: false
+          junitxml-title: ðŸ˜Ž Tests Results
+          junitxml-path: ./coverage/jest-junit.xml
+          coverage-title: ðŸ‘€ Tests Details
+          coverage-path: ./coverage/coverage.txt
+          report-only-changed-files: true
+

@@ -1,0 +1,106 @@
+version: "3.9"
+
+services:
+  # ── PostgreSQL ─────────────────────────────────────────────────────────────
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── Redis ──────────────────────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── FastAPI backend ────────────────────────────────────────────────────────
+  api:
+    build:
+      context: ../../services/api
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file: ../../.env
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ../../services/api/src:/app/src  # hot-reload in dev
+
+  # ── ARQ background worker ──────────────────────────────────────────────────
+  worker:
+    build:
+      context: ../../services/api
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file: ../../.env
+    command: arq src.app.core.worker.settings.WorkerSettings
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  # ── TensorFlow Serving (ML inference) ─────────────────────────────────────
+  ml:
+    image: tensorflow/serving:latest
+    restart: unless-stopped
+    ports:
+      - "8501:8501"   # REST
+      - "8500:8500"   # gRPC
+    volumes:
+      - ../../services/ml/models:/models
+    environment:
+      MODEL_NAME: cassava  # overridden per crop in production
+    command: >
+      --model_config_file=/models/models.config
+      --model_config_file_poll_wait_seconds=60
+
+  # ── Next.js web app ────────────────────────────────────────────────────────
+  web:
+    build:
+      context: ../../apps/web
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file: ../../.env
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+
+  # ── Label Studio (image labeling) ─────────────────────────────────────────
+  labelstudio:
+    image: heartexlabs/label-studio:latest
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    volumes:
+      - labelstudio-data:/label-studio/data
+
+volumes:
+  postgres-data:
+  redis-data:
+  labelstudio-data:

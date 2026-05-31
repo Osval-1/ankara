@@ -1,0 +1,37 @@
+{
+  "common": {
+    "appName": "Cameroon Crop Doctor",
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "retry": "Try again",
+    "consultExpert": "Consult an extension worker",
+    "confidence": {
+      "low": "Low confidence",
+      "medium": "Medium confidence",
+      "high": "High confidence"
+    },
+    "crops": {
+      "cassava": "Cassava",
+      "maize": "Maize",
+      "plantain": "Plantain",
+      "tomato": "Tomato",
+      "cocoa": "Cocoa"
+    }
+  },
+  "diagnosis": {
+    "selectCrop": "Which crop are you photographing?",
+    "uploadPhoto": "Upload a photo of the leaf or plant",
+    "takingPhoto": "Take a photo",
+    "analyzing": "Analyzing your photo...",
+    "result": "Diagnosis result",
+    "likelyIssue": "Likely issue",
+    "nextSteps": "What to do next",
+    "expertWarning": "This is advice only. Always confirm with an extension worker before acting.",
+    "lowConfidenceWarning": "I am not confident about this result. Please show this to an extension worker."
+  },
+  "nav": {
+    "home": "Home",
+    "history": "My Diagnoses",
+    "settings": "Settings"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "name": "crop-doctor",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "apps/web",
+    "apps/mobile",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:web": "pnpm --filter web dev",
+    "dev:mobile": "pnpm --filter mobile start",
+    "build:web": "pnpm --filter web build",
+    "lint": "pnpm --filter './apps/**' --filter './packages/**' lint",
+    "typecheck": "pnpm --filter './apps/**' --filter './packages/**' typecheck",
+    "test": "pnpm --filter './apps/**' --filter './packages/**' test"
+  },
+  "packageManager": "pnpm@9.0.0",
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  }
+}
