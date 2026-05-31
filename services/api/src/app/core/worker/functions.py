@@ -9,12 +9,16 @@ from arq.worker import Worker
 asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
 
 
-# -------- background tasks --------
-# Crop Doctor tasks registered here as they are built:
-# async def process_diagnosis_image(ctx: Worker, image_ref: str, crop: str) -> dict: ...
-# async def delete_expired_photos(ctx: Worker) -> int: ...
+async def process_diagnosis_image(ctx: Worker, image_ref: str, crop: str) -> dict:
+    """Upload image to R2 and run ML inference. Called from diagnosis endpoint."""
+    raise NotImplementedError
 
-# -------- base functions --------
+
+async def delete_expired_photos(ctx: Worker) -> int:
+    """Cron job: delete R2 photos past the 90-day retention window."""
+    raise NotImplementedError
+
+
 async def startup(ctx: Worker) -> None:
     logging.info("Worker Started")
 

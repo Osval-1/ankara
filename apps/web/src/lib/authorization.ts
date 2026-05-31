@@ -1,30 +1,19 @@
-import { Comment, User } from '@/types/api';
+import { User } from '@/types/api';
 
-export const canCreateDiscussion = (user: User | null | undefined) => {
-  return user?.role === 'ADMIN';
-};
-export const canDeleteDiscussion = (user: User | null | undefined) => {
-  return user?.role === 'ADMIN';
-};
-export const canUpdateDiscussion = (user: User | null | undefined) => {
-  return user?.role === 'ADMIN';
-};
+export const canViewInteractions = (user: User | null | undefined) =>
+  user?.role === 'admin';
 
-export const canViewUsers = (user: User | null | undefined) => {
-  return user?.role === 'ADMIN';
-};
+export const canViewEscalations = (user: User | null | undefined) =>
+  user?.role === 'admin' || user?.role === 'agronomist';
 
-export const canDeleteComment = (
-  user: User | null | undefined,
-  comment: Comment,
-) => {
-  if (user?.role === 'ADMIN') {
-    return true;
-  }
+export const canEditAdviceTemplates = (user: User | null | undefined) =>
+  user?.role === 'admin' || user?.role === 'agronomist';
 
-  if (user?.role === 'USER' && comment.author?.id === user.id) {
-    return true;
-  }
+export const canManageExtensionWorkers = (user: User | null | undefined) =>
+  user?.role === 'admin';
 
-  return false;
-};
+export const canViewModelVersions = (user: User | null | undefined) =>
+  user?.role === 'admin';
+
+export const canViewUsers = (user: User | null | undefined) =>
+  user?.role === 'admin';

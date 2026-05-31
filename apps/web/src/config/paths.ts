@@ -21,22 +21,29 @@ export const paths = {
     dashboard: {
       getHref: () => '/app',
     },
-    discussions: {
-      getHref: () => '/app/discussions',
+    diagnose: {
+      getHref: () => '/app/diagnose',
     },
-    discussion: {
-      getHref: (id: string) => `/app/discussions/${id}`,
+    interactions: {
+      getHref: () => '/app/interactions',
+    },
+    escalations: {
+      getHref: () => '/app/escalations',
+    },
+    adviceTemplates: {
+      getHref: () => '/app/advice-templates',
+    },
+    extensionWorkers: {
+      getHref: () => '/app/extension-workers',
+    },
+    modelVersions: {
+      getHref: () => '/app/model-versions',
     },
     users: {
       getHref: () => '/app/users',
     },
     profile: {
       getHref: () => '/app/profile',
-    },
-  },
-  public: {
-    discussion: {
-      getHref: (id: string) => `/public/discussions/${id}`,
     },
   },
 } as const;

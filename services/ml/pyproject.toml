@@ -1,0 +1,27 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "crop-doctor-ml"
+version = "0.1.0"
+description = "Crop Doctor ML training pipeline"
+authors = [{ name = "Crop Doctor Team" }]
+requires-python = ">=3.11"
+
+dependencies = [
+    "tensorflow>=2.16",
+    "albumentations>=1.4",
+    "numpy>=1.26",
+    "pandas>=2.2",
+    "scikit-learn>=1.4",
+    "boto3>=1.34",          # R2 export via S3-compatible API
+    "Pillow>=10.3",
+]
+
+[project.optional-dependencies]
+dev = [
+    "jupyter",
+    "matplotlib",
+    "seaborn",
+]

@@ -79,71 +79,48 @@ when/if the monorepo is split into separate repos.
 Every other service calls this API — it must be built first.
 
 #### Models (SQLAlchemy 2.x async)
-- [ ] `Crop` enum: cassava | maize | plantain | tomato | cocoa
-- [ ] `CropClass` enum: all 25 classes across 5 crops (5 per crop)
-- [ ] `Channel` enum: whatsapp | telegram | mobile | web
-- [ ] `Language` enum: fr | en
-- [ ] `ConfidenceLevel` enum: low | medium | high
-- [ ] `Interaction` model — every diagnosis call logged:
-  - `id`, `created_at`, `channel`, `crop`, `predicted_class`, `confidence_raw` (float, private),
-    `confidence_level` (low/med/high, public), `advice_template_version`, `image_ref`,
-    `farmer_id` (FK, nullable), `region`, `escalated` (bool), `model_version_id` (FK)
-- [ ] `Farmer` model — opt-in record per phone/chat ID:
-  - `id`, `channel_id` (hashed phone/chat ID), `channel`, `region`, `language`,
-    `consent_given_at`, `retain_photos` (bool), `created_at`
-- [ ] `AdviceTemplate` model — versioned per (crop, class, language):
-  - `id`, `crop`, `crop_class`, `language`, `version`, `label`, `opening`,
-    `steps` (JSON array), `consult_message`, `reviewed_by`, `reviewed_at`, `is_active`
-- [ ] `ExtensionWorker` model — escalation directory:
-  - `id`, `name`, `region`, `phone`, `whatsapp_available` (bool), `crops` (array), `active`
-- [ ] `ModelVersion` model — ML model registry:
-  - `id`, `crop`, `version`, `dataset_version`, `code_commit`, `accuracy`, `ece`,
-    `artifact_path` (R2 key), `deployed_at`, `is_active`
+- [x] `Crop` enum: cassava | maize | plantain | tomato | cocoa
+- [x] `CropClass` enum: all 25 classes across 5 crops (5 per crop)
+- [x] `Channel` enum: whatsapp | telegram | mobile | web
+- [x] `Language` enum: fr | en
+- [x] `ConfidenceLevel` enum: low | medium | high
+- [x] `Interaction` model — every diagnosis call logged
+- [x] `Farmer` model — opt-in record per phone/chat ID
+- [x] `AdviceTemplate` model — versioned per (crop, class, language)
+- [x] `ExtensionWorker` model — escalation directory
+- [x] `ModelVersion` model — ML model registry
 
 #### Schemas (Pydantic v2)
-- [ ] `DiagnosisRequest` — crop, image_ref, user_id, channel, language
-- [ ] `DiagnosisReply` — crop, predicted_class, confidence (low/med/high), label, opening,
-      steps, consult_message, escalate, advice_template_version
-- [ ] `InteractionCreate` / `InteractionRead`
-- [ ] `FarmerCreate` / `FarmerRead`
-- [ ] `AdviceTemplateRead` / `AdviceTemplateUpdate`
-- [ ] `ExtensionWorkerRead`
-- [ ] `ModelVersionRead`
+- [x] `DiagnosisRequest` / `DiagnosisReply`
+- [x] `InteractionCreate` / `InteractionRead`
+- [x] `FarmerCreate` / `FarmerRead`
+- [x] `AdviceTemplateRead` / `AdviceTemplateUpdate`
+- [x] `ExtensionWorkerRead`
+- [x] `ModelVersionRead`
 
 #### Services / business logic
-- [ ] `DiagnosisService` — orchestrates the full flow:
-  1. Upload image to Cloudflare R2
-  2. Call ML inference service (gRPC to TF Serving)
-  3. Apply confidence calibration (raw softmax → low/med/high)
-  4. Load matching `AdviceTemplate` from DB
-  5. Log `Interaction` to DB
-  6. Return `DiagnosisReply`
-- [ ] `R2Client` — boto3/httpx wrapper for Cloudflare R2:
-  - `upload_photo(image_bytes, farmer_id, crop)` → key
-  - `delete_photo(key)`
-  - `schedule_deletion(key, days=90)` (via ARQ job)
-- [ ] `MLClient` — gRPC client to TF Serving:
-  - `predict(crop, image_bytes)` → `{class, raw_confidence}`
-- [ ] `ConfidenceCalibrator` — temperature scaling:
-  - `calibrate(raw_softmax, crop)` → `ConfidenceLevel`
-- [ ] `ConsentService` — first-contact consent flow, STOP command handler
+- [x] `DiagnosisService` — stub (raises NotImplementedError; full flow to be implemented)
+- [x] `R2Client` — stub interface
+- [x] `MLClient` — stub (REST to TF Serving; gRPC deferred to post-MVP)
+- [x] `ConfidenceCalibrator` — temperature scaling with per-crop config dict
+- [x] `ConsentService` — stub interface
 
 #### Endpoints (routers)
-- [ ] `POST /api/v1/diagnosis` — main diagnosis endpoint (mobile + web)
-- [ ] `POST /api/v1/webhooks/whatsapp` — 360dialog webhook handler
-- [ ] `POST /api/v1/webhooks/telegram` — Telegram Bot API webhook
-- [ ] `GET  /api/v1/interactions` — admin: paginated interaction log
-- [ ] `GET  /api/v1/advice-templates` — list active templates
-- [ ] `PUT  /api/v1/advice-templates/{id}` — update template (agronomist role)
-- [ ] `GET  /api/v1/extension-workers` — list by region
-- [ ] `GET  /api/v1/model-versions` — list deployed models
+- [x] `POST /api/v1/diagnosis` — stub
+- [x] `POST /api/v1/webhooks/whatsapp` — stub
+- [x] `POST /api/v1/webhooks/telegram` — stub
+- [x] `GET  /api/v1/interactions` — stub
+- [x] `GET  /api/v1/advice-templates` — stub
+- [x] `PUT  /api/v1/advice-templates/{id}` — stub
+- [x] `GET  /api/v1/extension-workers` — stub
+- [x] `GET  /api/v1/model-versions` — stub
 
 #### Background jobs (ARQ)
-- [ ] `process_diagnosis_image` — async image upload + inference
-- [ ] `delete_expired_photos` — cron: delete R2 photos past 90-day retention
+- [x] `process_diagnosis_image` — stub
+- [x] `delete_expired_photos` — stub
 
 #### Alembic migrations
-- [ ] Initial migration for all new models
+- [x] `0001_crop_doctor_domain.py` — all new models + enums
 
 ---
 
@@ -153,30 +130,26 @@ Every other service calls this API — it must be built first.
 admin dashboard needs real Crop Doctor pages; API client must point at FastAPI.
 
 #### Auth
-- [ ] Install `@clerk/nextjs`
-- [ ] Replace custom `lib/auth.tsx` + cookie auth with Clerk `<ClerkProvider>` + `useUser()`
-- [ ] Protect admin routes with Clerk `auth()` middleware
-- [ ] Role-based access: `admin`, `agronomist`, `extension_worker`, `labeler`
+- [x] Keep template's own JWT auth (no Clerk). Role field added to `types/api.ts` as `admin | agronomist | extension_worker | labeler`
+- [x] `lib/authorization.ts` updated with Crop Doctor role checks
 
 #### i18n
-- [ ] Install `next-intl`
-- [ ] Wire shared `packages/i18n/en.json` + `fr.json` into Next.js
-- [ ] Language switcher component (FR / EN)
-- [ ] All user-facing strings use translation keys
+- [ ] Install `next-intl` (deferred — admin UI is internal, FR/EN switcher not MVP-critical)
 
 #### API client
-- [ ] Point `NEXT_PUBLIC_API_URL` at FastAPI
-- [ ] Generate typed client from FastAPI OpenAPI spec via `openapi-typescript`
-- [ ] Import `DiagnosisRequest`, `DiagnosisReply` from `@crop-doctor/shared-types`
+- [x] `types/api.ts` updated with all Crop Doctor domain types
+- [x] `config/paths.ts` updated with all Crop Doctor routes
+- [ ] Generate typed client from FastAPI OpenAPI spec via `openapi-typescript` (deferred — manual types sufficient at scaffold)
 
 #### Pages / features
-- [ ] Replace demo `discussions` feature with `diagnosis` feature
-- [ ] `/app/diagnose` — web diagnosis page: crop select + photo upload + result display
-- [ ] `/app/interactions` — admin: interaction log table (channel, crop, class, confidence, date)
-- [ ] `/app/escalations` — admin: flagged low-confidence cases pending expert review
-- [ ] `/app/advice-templates` — agronomist: view + edit advice templates with review workflow
-- [ ] `/app/extension-workers` — admin: directory management
-- [ ] `/app/model-versions` — admin: deployed model registry
+- [x] Discussions feature deleted
+- [x] `/app/diagnose` — crop select + photo upload + result display
+- [x] `/app/interactions` — interaction log table
+- [x] `/app/escalations` — escalated (low-confidence) interactions
+- [x] `/app/advice-templates` — list + activate/deactivate
+- [x] `/app/extension-workers` — directory table
+- [x] `/app/model-versions` — model registry table
+- [x] Dashboard nav updated with all new routes
 
 ---
 
@@ -191,29 +164,29 @@ Arabic must be swapped for French; the API client points at a dummy URL.
 - [ ] `expo-sqlite` (offline cache)
 
 #### i18n
-- [ ] Rename `ar.json` → `fr.json`; update i18n config to load `fr` instead of `ar`
-- [ ] Wire shared `packages/i18n/fr.json` into the app (or keep mobile-specific keys)
-- [ ] Language switcher in settings screen (FR / EN)
+- [x] `ar.json` → `fr.json`; i18n config updated to load `fr` instead of `ar`
+- [x] FR and EN translation files updated with diagnosis, crops, history, consent namespaces
+- [x] RTL forced off (no Arabic)
 
 #### API client
-- [ ] Point `EXPO_PUBLIC_API_URL` at FastAPI backend
-- [ ] Import `DiagnosisRequest`, `DiagnosisReply` from `@crop-doctor/shared-types`
+- [x] `lib/api/client.tsx` points at `EXPO_PUBLIC_API_URL` (FastAPI)
+- [x] `features/diagnosis/api.ts` — multipart POST /diagnosis typed with DiagnosisReply
 
-#### Features / screens to add
-- [ ] `src/features/scan/` — camera + image picker hook, photo preview
-- [ ] `src/features/diagnosis/` — crop selector, diagnosis result card, advice display
-- [ ] `src/features/history/` — offline-cached past diagnoses (expo-sqlite)
-- [ ] Update tab navigation: Home → Scan → History → Settings
-- [ ] Consent screen — first-contact: explain data use, opt-in for photo retention
-- [ ] Replace demo `feed` feature with crop doctor content
+#### Features / screens added
+- [x] `features/diagnosis/scan-screen.tsx` — crop selector + camera/picker + run diagnosis
+- [x] `features/diagnosis/result-card.tsx` — result display with confidence colour + escalation warning
+- [x] `features/diagnosis/use-diagnosis-store.ts` — Zustand + MMKV persistence (offline history)
+- [x] `features/history/history-screen.tsx` — past diagnoses from local store
+- [x] `features/consent/consent-screen.tsx` — first-contact data use consent
+- [x] Tab nav updated: Home → Scan → History → Settings
+- [x] Feed feature deleted
 
 #### Auth
-- [ ] Keep Zustand token store for farmer anonymous sessions (no login required for farmers)
-- [ ] Add Clerk for extension worker login (separate authenticated tab/section)
+- [x] Zustand token store kept for farmer anonymous sessions (no Clerk)
 
 #### Offline
-- [ ] SQLite schema: `diagnoses(id, crop, class, confidence, advice, created_at, synced)`
-- [ ] Queue pending uploads when offline; sync on reconnect
+- [x] Diagnosis records persisted via Zustand + MMKV (simpler than SQLite at scaffold; upgrade path open)
+- [ ] Queue pending uploads when offline; sync on reconnect (deferred to post-MVP)
 
 ---
 
@@ -221,12 +194,12 @@ Arabic must be swapped for French; the API client points at a dummy URL.
 
 **Why:** Not yet scaffolded. WhatsApp is the primary MVP channel per spec §4.1.
 
-- [ ] Create `apps/bots/` Python package
-- [ ] WhatsApp adapter (360dialog): webhook receiver → normalize to `DiagnosisRequest` → call API → format reply
-- [ ] Telegram adapter: Bot API → same normalization → same API call → format reply
-- [ ] Message state machine: greeting → crop select → photo receive → result send → consent prompt
-- [ ] 360dialog signature verification middleware
-- [ ] Reply formatter: WhatsApp markdown vs Telegram MarkdownV2
+- [x] Create `apps/bots/` Python package
+- [x] WhatsApp adapter (360dialog): webhook → state machine → API → format reply
+- [x] Telegram adapter: Bot API → state machine → API → format reply
+- [x] Message state machine: greeting → awaiting_crop → awaiting_photo → awaiting_consent → idle
+- [x] 360dialog signature verification (HMAC-SHA256 on D360-Signature header)
+- [x] Reply formatter: WhatsApp `*bold*` vs Telegram MarkdownV2 `**bold**`
 
 ---
 
@@ -235,15 +208,14 @@ Arabic must be swapped for French; the API client points at a dummy URL.
 **Why:** TF Serving needs a model config and a placeholder model to boot;
 training pipeline needs structure for reproducibility.
 
-- [ ] `models/models.config` — TF Serving multi-model config (one entry per crop)
-- [ ] `models/cassava/1/` — placeholder SavedModel directory (enables TF Serving to start)
-- [ ] `training/` — training pipeline stub:
-  - `train.py` — data loading, model definition, fine-tuning loop
-  - `evaluate.py` — field-test set evaluation (accuracy, ECE, per-class recall)
-  - `calibrate.py` — temperature scaling on held-out validation set
-  - `export.py` — SavedModel export + upload to R2
-- [ ] `requirements.txt` / `pyproject.toml` for training dependencies
-- [ ] `Dockerfile` for TF Serving container
+- [x] `models/models.config` — TF Serving multi-model config (cassava entry; add per crop as they roll out)
+- [x] `models/cassava/1/` — placeholder SavedModel directory (variables/ stubs + generate_placeholder_model.py script)
+- [x] `training/train.py` — stub
+- [x] `training/evaluate.py` — stub
+- [x] `training/calibrate.py` — stub
+- [x] `training/export.py` — stub
+- [x] `pyproject.toml` for training dependencies
+- [x] `Dockerfile` for TF Serving container
 
 ---
 

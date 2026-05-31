@@ -4,18 +4,14 @@
   },
   "settings": {
     "about": "About",
-    "app_name": "App Name",
-    "arabic": "Arabic",
+    "app_name": "Crop Doctor",
+    "french": "French",
     "english": "English",
     "generale": "General",
-    "github": "Github",
     "language": "Language",
-    "links": "Links",
     "logout": "Logout",
     "more": "More",
     "privacy": "Privacy Policy",
-    "rate": "Rate",
-    "share": "Share",
     "support": "Support",
     "support_us": "Support Us",
     "terms": "Terms of Service",
@@ -26,8 +22,36 @@
       "title": "Theme"
     },
     "title": "Settings",
-    "version": "Version",
-    "website": "Website"
+    "version": "Version"
   },
-  "welcome": "Welcome to Crop Doctor"
+  "welcome": "Welcome to Crop Doctor",
+  "diagnosis": {
+    "title": "Diagnosis",
+    "select_crop": "Choose your crop",
+    "take_photo": "Take a photo",
+    "choose_photo": "Choose from gallery",
+    "running": "Analysing...",
+    "result_title": "Result",
+    "confidence_low": "Low confidence",
+    "confidence_medium": "Medium confidence",
+    "confidence_high": "High confidence",
+    "escalate_warning": "Consult an extension worker"
+  },
+  "crops": {
+    "cassava": "Cassava",
+    "maize": "Maize",
+    "plantain": "Plantain",
+    "tomato": "Tomato",
+    "cocoa": "Cocoa"
+  },
+  "history": {
+    "title": "History",
+    "empty": "No diagnoses recorded yet."
+  },
+  "consent": {
+    "title": "Your data",
+    "message": "Your photos are deleted after 90 days. Would you like to keep them longer to help improve the service?",
+    "accept": "Yes, I consent",
+    "decline": "No thanks"
+  }
 }

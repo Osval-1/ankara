@@ -1,0 +1,57 @@
+{
+  "onboarding": {
+    "message": "Diagnostiquez les maladies de vos cultures depuis votre téléphone. Obtenez des conseils dans votre langue."
+  },
+  "settings": {
+    "about": "À propos",
+    "app_name": "Crop Doctor",
+    "french": "Français",
+    "english": "Anglais",
+    "generale": "Général",
+    "language": "Langue",
+    "logout": "Déconnexion",
+    "more": "Plus",
+    "privacy": "Politique de confidentialité",
+    "support": "Support",
+    "support_us": "Nous soutenir",
+    "terms": "Conditions d'utilisation",
+    "theme": {
+      "dark": "Sombre",
+      "light": "Clair",
+      "system": "Système",
+      "title": "Thème"
+    },
+    "title": "Paramètres",
+    "version": "Version"
+  },
+  "welcome": "Bienvenue sur Crop Doctor",
+  "diagnosis": {
+    "title": "Diagnostic",
+    "select_crop": "Choisissez votre culture",
+    "take_photo": "Prendre une photo",
+    "choose_photo": "Choisir depuis la galerie",
+    "running": "Analyse en cours...",
+    "result_title": "Résultat",
+    "confidence_low": "Confiance faible",
+    "confidence_medium": "Confiance moyenne",
+    "confidence_high": "Confiance élevée",
+    "escalate_warning": "Consultez un agent agricole"
+  },
+  "crops": {
+    "cassava": "Manioc",
+    "maize": "Maïs",
+    "plantain": "Plantain",
+    "tomato": "Tomate",
+    "cocoa": "Cacao"
+  },
+  "history": {
+    "title": "Historique",
+    "empty": "Aucun diagnostic enregistré."
+  },
+  "consent": {
+    "title": "Utilisation de vos données",
+    "message": "Vos photos sont supprimées après 90 jours. Souhaitez-vous les conserver plus longtemps pour améliorer le service ?",
+    "accept": "Oui, je consens",
+    "decline": "Non merci"
+  }
+}

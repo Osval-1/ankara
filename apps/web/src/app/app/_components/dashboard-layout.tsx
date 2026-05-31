@@ -1,6 +1,6 @@
 'use client';
 
-import { Home, PanelLeft, Folder, Users, User2 } from 'lucide-react';
+import { Home, PanelLeft, Microscope, ListOrdered, AlertTriangle, FileText, UserCheck, Cpu, Users, User2 } from 'lucide-react';
 import NextLink from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 import { ErrorBoundary } from 'react-error-boundary';
@@ -45,8 +45,13 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   });
   const navigation = [
     { name: 'Dashboard', to: paths.app.root.getHref(), icon: Home },
-    { name: 'Discussions', to: paths.app.discussions.getHref(), icon: Folder },
-    user.data?.role === 'ADMIN' && {
+    { name: 'Diagnose', to: paths.app.diagnose.getHref(), icon: Microscope },
+    { name: 'Interactions', to: paths.app.interactions.getHref(), icon: ListOrdered },
+    { name: 'Escalations', to: paths.app.escalations.getHref(), icon: AlertTriangle },
+    { name: 'Advice Templates', to: paths.app.adviceTemplates.getHref(), icon: FileText },
+    { name: 'Extension Workers', to: paths.app.extensionWorkers.getHref(), icon: UserCheck },
+    { name: 'Model Versions', to: paths.app.modelVersions.getHref(), icon: Cpu },
+    user.data?.role === 'admin' && {
       name: 'Users',
       to: paths.app.users.getHref(),
       icon: Users,

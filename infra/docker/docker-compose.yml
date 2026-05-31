@@ -91,6 +91,18 @@ services:
     depends_on:
       - api
 
+  # ── Bots (WhatsApp + Telegram adapters) ───────────────────────────────────
+  bots:
+    build:
+      context: ../../apps/bots
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file: ../../apps/bots/.env
+    ports:
+      - "8002:8002"
+    depends_on:
+      - api
+
   # ── Label Studio (image labeling) ─────────────────────────────────────────
   labelstudio:
     image: heartexlabs/label-studio:latest
