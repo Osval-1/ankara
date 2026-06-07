@@ -123,12 +123,14 @@ crop-doctor/
 - **Distribution:** Expo EAS Build for Android APK / AAB; Google Play Store; sideload-friendly APK for areas where the Play Store is not used.
 
 **Why React Native over Flutter:**
+
 - Shares language (TypeScript) and ecosystem with the Next.js web app.
 - Larger pool of African developers familiar with JS/React.
 - Expo materially reduces native-build complexity for a small team.
 - Flutter is technically excellent but doesn't give enough advantage to justify a second language and a second hiring pool.
 
 **Why not native Android only:**
+
 - iOS coverage is nearly free with React Native; closes off zero options.
 - Some extension workers, NGOs, and partner staff use iOS.
 
@@ -147,6 +149,7 @@ crop-doctor/
 - **Hosting:** Vercel free tier at MVP; self-host on the VPS (Caddy + Node) if cost becomes an issue at scale.
 
 **What the web app does:**
+
 - Public landing / about / partner pages.
 - Farmer-facing web diagnosis (upload a photo from a browser).
 - **Admin dashboard** for extension workers and project team: interaction logs, escalation queue, advice template management, per-region pilot metrics, dataset upload UI.
@@ -164,6 +167,7 @@ Both bots are thin Python adapters living inside the FastAPI app (separate route
 - **Reply formatting:** Each adapter formats the normalized `DiagnosisReply` for its platform (WhatsApp's markdown, Telegram's MarkdownV2, mobile/web's JSON).
 
 **Why two chat platforms:**
+
 - WhatsApp is the dominant channel in Cameroon for farmers and cooperatives.
 - Telegram is useful for tech-savvy users, partner staff, and as a fallback if WhatsApp Business API onboarding takes time.
 - Both are trivial to support once the normalization layer exists.
@@ -180,12 +184,13 @@ Both bots are thin Python adapters living inside the FastAPI app (separate route
 - **OpenAPI:** Auto-generated; consumed by mobile and web via `openapi-typescript` to produce typed clients.
 - **DB driver:** SQLAlchemy 2.x + Alembic for migrations.
 - **Async:** Async endpoints throughout; sync only where a library forces it (e.g., some image libs).
-- **Background jobs:** RQ (Redis Queue) at MVP — simpler than Celery. Migrate to Celery if job patterns get complex.
+- **Background jobs:** ARQ (async Redis queue) — fits the async FastAPI codebase; already wired into the boilerplate. RQ was considered but ARQ is a better fit since workers share the same async event loop as the API.
 - **Validation:** Pydantic everywhere; centralized error responses.
 - **Tests:** `pytest` + `httpx` AsyncClient for integration tests.
 - **Linting/formatting:** `ruff` + `black` + `mypy` (strict on new modules, lenient on legacy).
 
 **Why FastAPI over Node/NestJS:**
+
 - ML code is Python. Calling the model from the API without crossing a language boundary keeps the system simple.
 - Pydantic + OpenAPI is the cleanest way to expose a typed contract to TS clients.
 - The team will be reading ML code anyway — keeping the API in the same language reduces cognitive load.
@@ -194,7 +199,7 @@ Both bots are thin Python adapters living inside the FastAPI app (separate route
 
 - **Trained models:** TensorFlow / Keras → exported as SavedModel.
 - **Server:** TensorFlow Serving in a separate Docker container.
-- **Protocol:** gRPC from FastAPI for low latency; REST as a debugging fallback.
+- **Protocol:** REST from FastAPI at MVP (httpx to TF Serving REST endpoint). gRPC deferred to post-MVP — adds protobuf tooling complexity with no measurable benefit at current scale.
 - **Per-crop models:** Loaded as separate model versions in TF Serving; backend routes by crop.
 - **Calibration layer:** Temperature scaling applied inside the API before returning confidence to clients (kept out of the model artifact so we can retune without retraining).
 - **OOD detection:** Auxiliary "not a leaf / not a pod" classifier per crop where useful; or softmax-entropy threshold for v1 simplicity.
@@ -231,7 +236,8 @@ Both bots are thin Python adapters living inside the FastAPI app (separate route
 - One Redis instance covers:
   - Rate limiting (per phone number, per IP).
   - Short-term cache (recent diagnoses, dedup).
-  - Background job queue via RQ.
+  - Background job queue via ARQ.
+  - Bot conversation state (per channel_id state machine) — initially in-process dict, Redis-backed for multi-instance deployments.
 - Hosted: Upstash (free tier) or self-hosted on the VPS.
 
 ### 4.6 Reverse Proxy — Caddy
@@ -284,16 +290,16 @@ Both bots are thin Python adapters living inside the FastAPI app (separate route
 ## 6. Identity, Auth, and Access
 
 - **Farmers:** Identified by phone number (WhatsApp / Telegram chat ID) or anonymous web/mobile session. No account required.
-- **Extension workers & admins:** Authenticated via **Clerk** — email + password, optional Google, optional SMS OTP. Role-based access: `admin`, `agronomist`, `extension_worker`, `labeler`.
-- **API keys:** Per-bot service-to-service auth via signed JWTs; webhook signatures verified for WhatsApp/Telegram callbacks.
-- **Consent flow:** First-contact message in the bot explains data use; farmer must reply "yes" to opt in for photo retention beyond 90 days.
+- **Extension workers & admins:** Authenticated via the FastAPI backend's own JWT auth — email + password, cookie-based sessions. Role-based access enforced via a `role` column on the `users` table: `admin`, `agronomist`, `extension_worker`, `labeler`. No external auth provider (Clerk was evaluated and rejected — the template's built-in auth covers all internal user needs without the external dependency or US-hosted data concern).
+- **API keys:** Per-bot service-to-service auth via signed JWTs; webhook signatures verified for WhatsApp (HMAC-SHA256 on D360-Signature header) and Telegram (X-Telegram-Bot-Api-Secret-Token header).
+- **Consent flow:** First-contact message in the bot explains data use; farmer must reply "yes" to opt in for photo retention beyond 90 days. In the mobile app, a `ConsentScreen` is shown on first launch and the decision is stored locally via MMKV.
 
 ---
 
 ## 7. Internationalization & Content
 
-- **Library:** `i18next` shared between web (`next-intl` adapter) and mobile (React Native binding).
-- **Translation file format:** Flat JSON per language, one file per namespace (`common.json`, `cassava.json`, `maize.json`, etc.).
+- **Library:** `i18next` on mobile (React Native binding). `next-intl` for web is deferred — the admin dashboard is internal and FR/EN switching is not MVP-critical for that audience.
+- **Translation file format:** Flat JSON per language, one file per app (`en.json`, `fr.json`), namespaced by key prefix (`diagnosis.*`, `crops.*`, `settings.*`, etc.).
 - **Languages at MVP:** French (`fr`), English (`en`).
 - **Languages at v2:** Pidgin (`pcm`), Fulfulde (`ff`), Ewondo (`ewo`), Duala (`dua`), Bassa (`bas`).
 - **Review workflow:** Every advice template change goes through a native speaker + a pathologist before deployment. PR template enforces this checkbox.
@@ -355,7 +361,7 @@ Both bots are thin Python adapters living inside the FastAPI app (separate route
 - **Secrets:** `.env` files in dev; GitHub Actions secrets in CI; `doppler` or `sops` if secret sprawl gets bad.
 - **PII minimization:** No farmer names stored; phone numbers hashed where used as identifiers in analytics tables.
 - **Data retention:** Photos default-deleted at 90 days. Farmer can revoke consent at any time via a `STOP` command in the bot.
-- **Access control:** Admin dashboard locked behind Clerk auth + role check. All admin actions audit-logged.
+- **Access control:** Admin dashboard locked behind own JWT auth + role check (`admin`, `agronomist`, `extension_worker`, `labeler`). All admin actions audit-logged.
 - **Cameroon data protection:** Compliance with ANTIC guidelines reviewed before scale.
 - **Penetration / dependency scanning:** GitHub Dependabot enabled; `pip-audit` and `npm audit` in CI.
 
@@ -365,20 +371,19 @@ Both bots are thin Python adapters living inside the FastAPI app (separate route
 
 Rough order-of-magnitude, USD. Real costs depend heavily on usage.
 
-| Item | Cost |
-|------|------|
-| VPS (Hetzner CX22) | ~$5 |
-| Cloudflare R2 (first ~10 GB free) | $0–5 |
-| PostgreSQL (Supabase free) | $0 |
-| Redis (Upstash free) | $0 |
-| Vercel (web, free tier) | $0 |
-| Clerk (free tier, ≤10k MAU) | $0 |
-| Sentry (free tier) | $0 |
+| Item                                                   | Cost                        |
+| ------------------------------------------------------ | --------------------------- |
+| VPS (Hetzner CX22)                                     | ~$5                         |
+| Cloudflare R2 (first ~10 GB free)                      | $0–5                        |
+| PostgreSQL (Supabase free)                             | $0                          |
+| Redis (Upstash free)                                   | $0                          |
+| Vercel (web, free tier)                                | $0                          |
+| Sentry (free tier)                                     | $0                          |
 | Twilio / 360dialog WhatsApp (per-conversation pricing) | $20–100 depending on volume |
-| Telegram | $0 |
-| Domain | $1–2 |
-| Colab Pro (training, intermittent) | ~$10 |
-| **Total** | **~$40–125 / month** |
+| Telegram                                               | $0                          |
+| Domain                                                 | $1–2                        |
+| Colab Pro (training, intermittent)                     | ~$10                        |
+| **Total**                                              | **~$40–125 / month**        |
 
 This is realistic for a self-funded MVP. Scale to thousands of farmers and the WhatsApp line dominates.
 
@@ -388,23 +393,27 @@ This is realistic for a self-funded MVP. Scale to thousands of farmers and the W
 
 A short log of the key choices and what we'd reconsider:
 
-| Decision | Choice | What would change our mind |
-|----------|--------|---------------------------|
-| Mobile framework | React Native (Expo) | If we need deep native camera/ML integration before v2 and Flutter's tooling proves materially better |
-| Web framework | Next.js | If we want to avoid Vercel lock-in entirely from day one (then SvelteKit or Remix) |
-| Backend language | Python (FastAPI) | Never — ML is Python; co-locating is the right call |
-| WhatsApp provider | 360dialog | If onboarding stalls, switch to Twilio |
-| ML framework | TensorFlow | If a critical SOTA paper we want to use is PyTorch-only and conversion is painful — switch to PyTorch + TorchServe |
-| Inference server | TF Serving | If batching, observability, or Python custom logic in serving becomes important — BentoML |
-| Database | PostgreSQL | Never for the MVP. Maybe add a vector DB in v2 if we add RAG to advice generation |
-| Object storage | Cloudflare R2 | Only if R2 has reliability issues — fall back to Backblaze B2 |
-| Auth | Clerk | If pricing changes badly at scale — switch to Supabase Auth or self-hosted Authentik |
-| Hosting | Single VPS (Hetzner) | Move to managed K8s once >3 services or >1 region |
-| Monorepo | Single repo with packages | Split out the mobile or ML repo if build times become painful |
+| Decision                        | Choice                        | What would change our mind                                                                                         |
+| ------------------------------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| Mobile framework                | React Native (Expo)           | If we need deep native camera/ML integration before v2 and Flutter's tooling proves materially better              |
+| Web framework                   | Next.js                       | If we want to avoid Vercel lock-in entirely from day one (then SvelteKit or Remix)                                 |
+| Backend language                | Python (FastAPI)              | Never — ML is Python; co-locating is the right call                                                                |
+| WhatsApp provider               | 360dialog                     | If onboarding stalls, switch to Twilio                                                                             |
+| ML framework                    | TensorFlow                    | If a critical SOTA paper we want to use is PyTorch-only and conversion is painful — switch to PyTorch + TorchServe |
+| Inference server                | TF Serving                    | If batching, observability, or Python custom logic in serving becomes important — BentoML                          |
+| Database                        | PostgreSQL                    | Never for the MVP. Maybe add a vector DB in v2 if we add RAG to advice generation                                  |
+| Object storage                  | Cloudflare R2                 | Only if R2 has reliability issues — fall back to Backblaze B2                                                      |
+| Auth                            | Own JWT (FastAPI boilerplate) | If we need social login or SSO for external partners — add Supabase Auth or self-hosted Authentik                  |
+| Bot background jobs             | ARQ                           | If job patterns become complex and Celery's retry/scheduling features are needed                                   |
+| ML serving protocol             | REST (TF Serving)             | Switch to gRPC when inference latency becomes measurable at scale                                                  |
+| Advice template source of truth | DB (canonical)                | JSON files in packages/ are reference/seed only; edits go through the admin UI                                     |
+| Bot deployment                  | Separate `apps/bots/` package | Merge back into FastAPI sub-routers if ops complexity outweighs independence benefit                               |
+| Hosting                         | Single VPS (Hetzner)          | Move to managed K8s once >3 services or >1 region                                                                  |
+| Monorepo                        | Single repo with packages     | Split out the mobile or ML repo if build times become painful                                                      |
 
 ---
 
-## 13. What We Are Explicitly *Not* Building (Yet)
+## 13. What We Are Explicitly _Not_ Building (Yet)
 
 To keep the MVP achievable, the stack deliberately omits:
 
@@ -424,6 +433,16 @@ These are deferred to v2 and revisited only when concrete pressure justifies the
 
 ## 14. Open Questions
 
+**Decided during scaffolding (no longer open):**
+
+- ~~Auth for web/mobile~~ → Own JWT, no Clerk.
+- ~~Background job queue~~ → ARQ.
+- ~~Advice template source of truth~~ → DB canonical; JSON files are seed/reference only.
+- ~~ML serving protocol~~ → REST at MVP; gRPC post-MVP.
+- ~~Bot deployment model~~ → Separate `apps/bots/` package.
+
+**Still open:**
+
 1. **WhatsApp BSP** — 360dialog or Twilio? Pricing scales differently; need real volume estimate before locking in.
 2. **Self-hosted vs. managed Postgres** — Supabase free tier is great for MVP, but for sovereignty/data-residency reasons should we self-host from day one?
 3. **Hosting region** — EU (Hetzner) vs. closer-to-Africa (AWS Cape Town, OVH Senegal)? Latency vs. cost vs. data-sovereignty tradeoff.
@@ -437,23 +456,23 @@ These are deferred to v2 and revisited only when concrete pressure justifies the
 
 ## 15. Stack Summary (One-Page Cheat Sheet)
 
-| Layer | Choice |
-|-------|--------|
-| Mobile | React Native + Expo, TypeScript |
-| Web | Next.js 14 (App Router), TypeScript, Tailwind, shadcn/ui |
-| Chat bots | Python adapters for WhatsApp (360dialog) and Telegram (Bot API) |
-| Backend API | FastAPI, Pydantic, SQLAlchemy, Alembic |
-| ML serving | TensorFlow Serving (gRPC), separate container |
-| ML training | TensorFlow / Keras, Colab Pro → Lambda Labs, Weights & Biases |
-| Labeling | Label Studio (self-hosted) |
-| Database | PostgreSQL (Supabase free → self-hosted) |
-| Cache / queue | Redis (Upstash → self-hosted) + RQ |
-| Object storage | Cloudflare R2 |
-| Auth | Clerk |
-| Reverse proxy | Caddy (auto HTTPS) |
-| Containers | Docker + Docker Compose; Kubernetes only post-MVP |
-| CI/CD | GitHub Actions |
-| Hosting | Hetzner VPS + Vercel + Cloudflare R2 |
-| Observability | Sentry + PostHog + UptimeRobot; Prometheus/Grafana later |
-| i18n | i18next + next-intl, shared JSON files |
-| Repo | Monorepo (apps/, services/, packages/, infra/, data/, docs/) |
+| Layer          | Choice                                                                              |
+| -------------- | ----------------------------------------------------------------------------------- |
+| Mobile         | React Native + Expo, TypeScript                                                     |
+| Web            | Next.js 14 (App Router), TypeScript, Tailwind, shadcn/ui                            |
+| Chat bots      | Python adapters for WhatsApp (360dialog) and Telegram (Bot API)                     |
+| Backend API    | FastAPI, Pydantic, SQLAlchemy, Alembic                                              |
+| ML serving     | TensorFlow Serving (REST at MVP, gRPC post-MVP), separate container                 |
+| ML training    | TensorFlow / Keras, Colab Pro → Lambda Labs, Weights & Biases                       |
+| Labeling       | Label Studio (self-hosted)                                                          |
+| Database       | PostgreSQL (Supabase free → self-hosted)                                            |
+| Cache / queue  | Redis (Upstash → self-hosted) + ARQ                                                 |
+| Object storage | Cloudflare R2                                                                       |
+| Auth           | Own JWT (FastAPI boilerplate) — roles: admin, agronomist, extension_worker, labeler |
+| Reverse proxy  | Caddy (auto HTTPS)                                                                  |
+| Containers     | Docker + Docker Compose; Kubernetes only post-MVP                                   |
+| CI/CD          | GitHub Actions                                                                      |
+| Hosting        | Hetzner VPS + Vercel + Cloudflare R2                                                |
+| Observability  | Sentry + PostHog + UptimeRobot; Prometheus/Grafana later                            |
+| i18n           | i18next + next-intl, shared JSON files                                              |
+| Repo           | Monorepo (apps/, services/, packages/, infra/, data/, docs/)                        |

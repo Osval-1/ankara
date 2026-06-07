@@ -1,0 +1,23 @@
+{
+  "$schema": "https://unpkg.com/syncpack/dist/syncpack.schema.json",
+  "versionGroups": [
+    {
+      "label": "Local workspace packages — skip version checks",
+      "packages": ["**"],
+      "dependencies": [
+        "@crop-doctor/shared-types",
+        "@crop-doctor/i18n",
+        "@crop-doctor/advice-templates"
+      ],
+      "isIgnored": true
+    }
+  ],
+  "semverGroups": [
+    {
+      "label": "Pin exact versions for shared packages",
+      "packages": ["@crop-doctor/*"],
+      "dependencies": ["**"],
+      "range": ""
+    }
+  ]
+}

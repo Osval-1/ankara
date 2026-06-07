@@ -1,6 +1,10 @@
 {
   "name": "@crop-doctor/i18n",
   "version": "0.1.0",
-  "private": true,
-  "main": "index.js"
+  "private": false,
+  "main": "index.js",
+  "scripts": {
+    "format": "prettier --write .",
+    "clean": "echo 'nothing to clean'"
+  }
 }

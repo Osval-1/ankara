@@ -1,7 +1,11 @@
 {
   "name": "@crop-doctor/advice-templates",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "main": "index.js",
-  "types": "index.d.ts"
+  "types": "index.d.ts",
+  "scripts": {
+    "format": "prettier --write .",
+    "clean": "echo 'nothing to clean'"
+  }
 }

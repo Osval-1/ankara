@@ -1,0 +1,23 @@
+[project]
+name = "crop-doctor"
+version = "0.1.0"
+requires-python = ">=3.11, <3.14"
+
+[tool.uv.workspace]
+members = [
+    "services/api",
+    "services/ml",
+    "apps/bots",
+]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 120
+fix = true
+
+[tool.ruff.lint]
+select = ["F", "E", "W", "C", "UP", "I"]
+ignore = ["E402", "UP006", "UP007", "E741"]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401", "F403"]

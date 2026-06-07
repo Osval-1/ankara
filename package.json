@@ -2,18 +2,29 @@
   "name": "crop-doctor",
   "version": "0.1.0",
   "private": true,
-  "workspaces": [
-    "apps/web",
-    "apps/mobile",
-    "packages/*"
-  ],
   "scripts": {
-    "dev:web": "pnpm --filter web dev",
-    "dev:mobile": "pnpm --filter mobile start",
-    "build:web": "pnpm --filter web build",
-    "lint": "pnpm --filter './apps/**' --filter './packages/**' lint",
-    "typecheck": "pnpm --filter './apps/**' --filter './packages/**' typecheck",
-    "test": "pnpm --filter './apps/**' --filter './packages/**' test"
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "lint": "turbo lint",
+    "typecheck": "turbo typecheck",
+    "test": "turbo test",
+    "format": "turbo format",
+    "clean": "turbo clean",
+    "prepare": "husky",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "syncpack": "syncpack list-mismatches"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.27.7",
+    "@commitlint/cli": "^19.3.0",
+    "@commitlint/config-conventional": "^19.2.2",
+    "eslint": "^8.57.0",
+    "husky": "^9.1.4",
+    "lint-staged": "^15.2.7",
+    "prettier": "^3.3.3",
+    "syncpack": "^12.3.2",
+    "turbo": "^2.0.12"
   },
   "packageManager": "pnpm@9.0.0",
   "engines": {

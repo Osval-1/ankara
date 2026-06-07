@@ -1,0 +1,64 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "baseBranches": ["main"],
+  "labels": ["dependencies"],
+  "assignees": ["asvaldr04"],
+  "timezone": "Africa/Douala",
+  "schedule": ["before 6am on Monday"],
+  "packageRules": [
+    {
+      "description": "Group all non-major JS/TS dep updates into one weekly PR",
+      "matchManagers": ["npm"],
+      "matchUpdateTypes": ["patch", "minor"],
+      "groupName": "JS/TS dependencies (non-major)",
+      "automerge": false
+    },
+    {
+      "description": "Group all non-major Python dep updates into one weekly PR",
+      "matchManagers": ["uv"],
+      "matchUpdateTypes": ["patch", "minor"],
+      "groupName": "Python dependencies (non-major)",
+      "automerge": false
+    },
+    {
+      "description": "Group GitHub Actions updates",
+      "matchManagers": ["github-actions"],
+      "matchUpdateTypes": ["patch", "minor", "major"],
+      "groupName": "GitHub Actions",
+      "automerge": false
+    },
+    {
+      "description": "Group Docker base image updates",
+      "matchManagers": ["dockerfile", "docker-compose"],
+      "matchUpdateTypes": ["patch", "minor"],
+      "groupName": "Docker base images (non-major)",
+      "automerge": false
+    },
+    {
+      "description": "Major updates always get their own PR for review",
+      "matchUpdateTypes": ["major"],
+      "groupName": null,
+      "automerge": false
+    },
+    {
+      "description": "Automerge minor/patch for dev-only tooling",
+      "matchDepTypes": ["devDependencies"],
+      "matchPackageNames": [
+        "prettier",
+        "eslint",
+        "ruff",
+        "husky",
+        "lint-staged",
+        "turbo"
+      ],
+      "matchUpdateTypes": ["patch"],
+      "automerge": true
+    }
+  ],
+  "vulnerabilityAlerts": {
+    "labels": ["security"],
+    "assignees": ["asvaldr04"]
+  },
+  "osvVulnerabilityAlerts": true
+}

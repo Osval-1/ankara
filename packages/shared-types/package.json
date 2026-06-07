@@ -1,7 +1,14 @@
 {
   "name": "@crop-doctor/shared-types",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "main": "index.ts",
-  "types": "index.ts"
+  "types": "index.ts",
+  "scripts": {
+    "build": "tsc --noEmit",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint . --max-warnings=0",
+    "format": "prettier --write .",
+    "clean": "rm -rf dist"
+  }
 }
