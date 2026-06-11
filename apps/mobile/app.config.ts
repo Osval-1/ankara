@@ -1,28 +1,28 @@
-import type { ConfigContext, ExpoConfig } from '@expo/config';
+import type { ConfigContext, ExpoConfig } from "@expo/config";
 
-import type { AppIconBadgeConfig } from 'app-icon-badge/types';
+import type { AppIconBadgeConfig } from "app-icon-badge/types";
 
-import 'tsx/cjs';
+import "tsx/cjs";
 
 // adding lint exception as we need to import tsx/cjs before env.ts is imported
 // eslint-disable-next-line perfectionist/sort-imports
-import Env from './env';
+import Env from "./env";
 
-const EXPO_ACCOUNT_OWNER = '';   // set your Expo account name before first EAS build
-const EAS_PROJECT_ID = '';       // set after running: eas project:init
+const EXPO_ACCOUNT_OWNER = ""; // set your Expo account name before first EAS build
+const EAS_PROJECT_ID = ""; // set after running: eas project:init
 
 const appIconBadgeConfig: AppIconBadgeConfig = {
-  enabled: Env.EXPO_PUBLIC_APP_ENV !== 'production',
+  enabled: Env.EXPO_PUBLIC_APP_ENV !== "production",
   badges: [
     {
       text: Env.EXPO_PUBLIC_APP_ENV,
-      type: 'banner',
-      color: 'white',
+      type: "banner",
+      color: "white",
     },
     {
       text: Env.EXPO_PUBLIC_VERSION.toString(),
-      type: 'ribbon',
-      color: 'white',
+      type: "ribbon",
+      color: "white",
     },
   ],
 };
@@ -33,16 +33,16 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   description: `${Env.EXPO_PUBLIC_NAME} Mobile App`,
   owner: EXPO_ACCOUNT_OWNER,
   scheme: Env.EXPO_PUBLIC_SCHEME,
-  slug: 'crop-doctor',
+  slug: "ankara",
   version: Env.EXPO_PUBLIC_VERSION.toString(),
-  orientation: 'portrait',
-  icon: './assets/icon.png',
-  userInterfaceStyle: 'automatic',
+  orientation: "portrait",
+  icon: "./assets/icon.png",
+  userInterfaceStyle: "automatic",
   newArchEnabled: true,
   updates: {
     fallbackToCacheTimeout: 0,
   },
-  assetBundlePatterns: ['**/*'],
+  assetBundlePatterns: ["**/*"],
   ios: {
     supportsTablet: true,
     bundleIdentifier: Env.EXPO_PUBLIC_BUNDLE_ID,
@@ -55,54 +55,54 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   },
   android: {
     adaptiveIcon: {
-      foregroundImage: './assets/adaptive-icon.png',
-      backgroundColor: '#2E3C4B',
+      foregroundImage: "./assets/adaptive-icon.png",
+      backgroundColor: "#2E3C4B",
     },
     package: Env.EXPO_PUBLIC_PACKAGE,
   },
   web: {
-    favicon: './assets/favicon.png',
-    bundler: 'metro',
+    favicon: "./assets/favicon.png",
+    bundler: "metro",
   },
   plugins: [
     [
-      'expo-splash-screen',
+      "expo-splash-screen",
       {
-        backgroundColor: '#2E3C4B',
-        image: './assets/splash-icon.png',
+        backgroundColor: "#2E3C4B",
+        image: "./assets/splash-icon.png",
         imageWidth: 150,
       },
     ],
     [
-      'expo-font',
+      "expo-font",
       {
         ios: {
           fonts: [
-            'node_modules/@expo-google-fonts/inter/400Regular/Inter_400Regular.ttf',
-            'node_modules/@expo-google-fonts/inter/500Medium/Inter_500Medium.ttf',
-            'node_modules/@expo-google-fonts/inter/600SemiBold/Inter_600SemiBold.ttf',
-            'node_modules/@expo-google-fonts/inter/700Bold/Inter_700Bold.ttf',
+            "node_modules/@expo-google-fonts/inter/400Regular/Inter_400Regular.ttf",
+            "node_modules/@expo-google-fonts/inter/500Medium/Inter_500Medium.ttf",
+            "node_modules/@expo-google-fonts/inter/600SemiBold/Inter_600SemiBold.ttf",
+            "node_modules/@expo-google-fonts/inter/700Bold/Inter_700Bold.ttf",
           ],
         },
         android: {
           fonts: [
             {
-              fontFamily: 'Inter',
+              fontFamily: "Inter",
               fontDefinitions: [
                 {
-                  path: 'node_modules/@expo-google-fonts/inter/400Regular/Inter_400Regular.ttf',
+                  path: "node_modules/@expo-google-fonts/inter/400Regular/Inter_400Regular.ttf",
                   weight: 400,
                 },
                 {
-                  path: 'node_modules/@expo-google-fonts/inter/500Medium/Inter_500Medium.ttf',
+                  path: "node_modules/@expo-google-fonts/inter/500Medium/Inter_500Medium.ttf",
                   weight: 500,
                 },
                 {
-                  path: 'node_modules/@expo-google-fonts/inter/600SemiBold/Inter_600SemiBold.ttf',
+                  path: "node_modules/@expo-google-fonts/inter/600SemiBold/Inter_600SemiBold.ttf",
                   weight: 600,
                 },
                 {
-                  path: 'node_modules/@expo-google-fonts/inter/700Bold/Inter_700Bold.ttf',
+                  path: "node_modules/@expo-google-fonts/inter/700Bold/Inter_700Bold.ttf",
                   weight: 700,
                 },
               ],
@@ -111,10 +111,10 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
         },
       },
     ],
-    'expo-localization',
-    'expo-router',
-    ['app-icon-badge', appIconBadgeConfig],
-    ['react-native-edge-to-edge'],
+    "expo-localization",
+    "expo-router",
+    ["app-icon-badge", appIconBadgeConfig],
+    ["react-native-edge-to-edge"],
   ],
   extra: {
     eas: {

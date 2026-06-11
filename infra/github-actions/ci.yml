@@ -73,20 +73,20 @@ jobs:
         run: uv run ruff format --check .
 
       - name: Type check (mypy — API)
-        run: uv run --package crop-doctor-api mypy services/api/src
+        run: uv run --package ankara-api mypy services/api/src
 
       - name: Tests — API
-        run: uv run --package crop-doctor-api pytest services/api/tests -v
+        run: uv run --package ankara-api pytest services/api/tests -v
         env:
           ENVIRONMENT: test
           POSTGRES_SERVER: localhost
-          POSTGRES_USER: cropdoctor
+          POSTGRES_USER: ankara
           POSTGRES_PASSWORD: test
-          POSTGRES_DB: cropdoctor_test
+          POSTGRES_DB: ankara_test
           SECRET_KEY: test-secret-key-32-chars-minimum!!
 
       - name: Tests — Bots
-        run: uv run --package crop-doctor-bots pytest apps/bots/tests -v
+        run: uv run --package ankara-bots pytest apps/bots/tests -v
         continue-on-error: true # bots tests may not exist yet
 
   # ── Dependency hygiene ────────────────────────────────────────────────────
@@ -122,7 +122,7 @@ jobs:
         with:
           context: services/api
           push: false
-          tags: crop-doctor-api:${{ github.sha }}
+          tags: ankara-api:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -131,6 +131,6 @@ jobs:
         with:
           context: apps/bots
           push: false
-          tags: crop-doctor-bots:${{ github.sha }}
+          tags: ankara-bots:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max

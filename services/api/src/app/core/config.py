@@ -6,7 +6,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class AppSettings(BaseSettings):
-    APP_NAME: str = "Cameroon Crop Doctor"
+    APP_NAME: str = "Ankara"
     APP_DESCRIPTION: str | None = None
     APP_VERSION: str | None = None
     LICENSE_NAME: str | None = None

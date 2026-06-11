@@ -3,10 +3,10 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "crop-doctor-bots"
+name = "ankara-bots"
 version = "0.1.0"
-description = "Crop Doctor WhatsApp and Telegram bot adapters"
-authors = [{ name = "Crop Doctor Team" }]
+description = "Ankara WhatsApp and Telegram bot adapters"
+authors = [{ name = "Ankara Team" }]
 requires-python = ">=3.11"
 
 dependencies = [

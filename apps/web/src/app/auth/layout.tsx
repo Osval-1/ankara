@@ -6,8 +6,8 @@ import { Spinner } from '@/components/ui/spinner';
 import { AuthLayout as AuthLayoutComponent } from './_components/auth-layout';
 
 export const metadata = {
-  title: 'Cameroon Crop Doctor',
-  description: 'Sign in to Cameroon Crop Doctor',
+  title: 'Ankara',
+  description: 'Sign in to Ankara',
 };
 
 const AuthLayout = ({ children }: { children: ReactNode }) => {

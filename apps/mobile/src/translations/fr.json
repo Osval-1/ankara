@@ -4,7 +4,7 @@
   },
   "settings": {
     "about": "À propos",
-    "app_name": "Crop Doctor",
+    "app_name": "Ankara",
     "french": "Français",
     "english": "Anglais",
     "generale": "Général",
@@ -24,7 +24,7 @@
     "title": "Paramètres",
     "version": "Version"
   },
-  "welcome": "Bienvenue sur Crop Doctor",
+  "welcome": "Bienvenue sur Ankara",
   "diagnosis": {
     "title": "Diagnostic",
     "select_crop": "Choisissez votre culture",

@@ -4,7 +4,7 @@
   },
   "settings": {
     "about": "About",
-    "app_name": "Crop Doctor",
+    "app_name": "Ankara",
     "french": "French",
     "english": "English",
     "generale": "General",
@@ -24,7 +24,7 @@
     "title": "Settings",
     "version": "Version"
   },
-  "welcome": "Welcome to Crop Doctor",
+  "welcome": "Welcome to Ankara",
   "diagnosis": {
     "title": "Diagnosis",
     "select_crop": "Choose your crop",

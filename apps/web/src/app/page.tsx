@@ -10,10 +10,10 @@ const HomePage = () => {
     <div className="flex h-screen items-center bg-white">
       <div className="mx-auto max-w-7xl px-4 py-12 text-center sm:px-6 lg:px-8 lg:py-16">
         <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-          <span className="block">Cameroon Crop Doctor</span>
+          <span className="block">Ankara</span>
         </h2>
-        <img src="/logo.svg" alt="Crop Doctor" />
-        <p>Crop disease diagnosis for smallholder farmers in Cameroon</p>
+        <img src="/logo.svg" alt="Ankara" />
+        <p>Crop disease diagnosis for smallholder farmers</p>
         <div className="mt-8 flex justify-center">
           <div className="inline-flex rounded-md shadow">
             <Link

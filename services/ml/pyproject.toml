@@ -3,10 +3,10 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "crop-doctor-ml"
+name = "ankara-ml"
 version = "0.1.0"
-description = "Crop Doctor ML training pipeline"
-authors = [{ name = "Crop Doctor Team" }]
+description = "Ankara ML training pipeline"
+authors = [{ name = "Ankara Team" }]
 requires-python = ">=3.11"
 
 dependencies = [

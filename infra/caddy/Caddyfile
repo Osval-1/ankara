@@ -1,19 +1,19 @@
-# Crop Doctor — Caddy reverse proxy
-# Replace cropdoctor.cm with your actual domain.
+# Ankara — Caddy reverse proxy
+# Replace ankara.example.com with your actual domain.
 # In local dev, use localhost and comment out TLS blocks.
 
-api.cropdoctor.cm {
+api.ankara.example.com {
     reverse_proxy localhost:8000
 }
 
-admin.cropdoctor.cm {
+admin.ankara.example.com {
     reverse_proxy localhost:3000
 }
 
-labeling.cropdoctor.cm {
+labeling.ankara.example.com {
     reverse_proxy localhost:8080
 }
 
-staging.cropdoctor.cm {
+staging.ankara.example.com {
     reverse_proxy localhost:3001
 }

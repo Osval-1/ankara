@@ -1,5 +1,5 @@
 {
-  "name": "@crop-doctor/shared-types",
+  "name": "@ankara/shared-types",
   "version": "0.1.0",
   "private": false,
   "main": "index.ts",

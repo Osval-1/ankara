@@ -1,7 +1,7 @@
-# Cameroon Crop Doctor — CLAUDE.md
+# Ankara — CLAUDE.md
 
-Monorepo for the Cameroon Crop Doctor project: a WhatsApp-first crop disease
-diagnosis tool for smallholder farmers in Cameroon. See `docs/` for full spec.
+Monorepo for the Ankara project: a WhatsApp-first crop disease diagnosis tool
+for smallholder farmers in Cameroon. See `docs/` for the full spec.
 
 ## Repo layout
 
@@ -27,27 +27,27 @@ docs/               PROJECT_SPEC.md, TECH_STACK.md, PARTNERSHIPS.md
 
 ## Tech stack (short)
 
-| Layer | Choice |
-|---|---|
-| Mobile | React Native + Expo (TypeScript) |
-| Web | Next.js 14, Tailwind, shadcn/ui, React Query |
-| Bots | Python FastAPI sub-routers (WhatsApp + Telegram) |
-| API | FastAPI, Pydantic v2, SQLAlchemy 2 async, Alembic |
-| ML | TensorFlow/Keras → TF Serving (gRPC), per-crop models |
-| DB | PostgreSQL (Supabase free tier → self-hosted) |
-| Cache/queue | Redis + ARQ |
-| Storage | Cloudflare R2 |
-| Auth | Clerk (web/mobile UI) + JWT (service-to-service) |
-| Proxy | Caddy (auto HTTPS) |
-| CI/CD | GitHub Actions |
+| Layer       | Choice                                                 |
+| ----------- | ------------------------------------------------------ |
+| Mobile      | React Native + Expo (TypeScript)                       |
+| Web         | Next.js 14, Tailwind, shadcn/ui, React Query           |
+| Bots        | Python FastAPI sub-routers (WhatsApp + Telegram)       |
+| API         | FastAPI, Pydantic v2, SQLAlchemy 2 async, Alembic      |
+| ML          | TensorFlow/Keras -> TF Serving (gRPC), per-crop models |
+| DB          | PostgreSQL (Supabase free tier -> self-hosted)         |
+| Cache/queue | Redis + ARQ                                            |
+| Storage     | Cloudflare R2                                          |
+| Auth        | Clerk (web/mobile UI) + JWT (service-to-service)       |
+| Proxy       | Caddy (auto HTTPS)                                     |
+| CI/CD       | GitHub Actions                                         |
 
 ## Key rules
 
 - The API is the single source of truth. Mobile, web, and bots all call
-  `services/api` — no disease logic lives in the clients.
+  `services/api` - no disease logic lives in the clients.
 - Never recommend specific pesticide/chemical brands anywhere in code or templates.
   Advice templates say "consult your extension worker before any chemical application."
-- Every advice template change requires review by an agronomist — enforced in the
+- Every advice template change requires review by an agronomist - enforced in the
   PR template checklist.
 - Confidence shown as low/medium/high, never raw float. Calibration is applied
   in the API before the response leaves the backend.
@@ -67,5 +67,5 @@ docker compose -f infra/docker/docker-compose.yml up
 
 ## Crop rollout order
 
-Cassava → Maize → Plantain → Tomato → Cocoa (sequential, one at a time).
+Cassava -> Maize -> Plantain -> Tomato -> Cocoa (sequential, one at a time).
 MVP = cassava only.

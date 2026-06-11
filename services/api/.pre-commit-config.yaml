@@ -21,8 +21,8 @@ repos:
     rev: v3.15.0
     hooks:
       - id: pyupgrade
-        args: [--py310-plus]
-        name: Upgrade code to Python 3.10+
+        args: [--py311-plus]
+        name: Upgrade code to Python 3.11+
 
   - repo: https://github.com/myint/docformatter
     rev: v1.7.7
@@ -37,11 +37,20 @@ repos:
         name: Unused noqa
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.1.9
+    rev: v0.11.13
     hooks:
       - id: ruff
-        args: [ --fix ]
+        args: [--fix]
       - id: ruff-format
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.16.0
+    hooks:
+      - id: mypy
+        args: [--config-file=pyproject.toml]
+        additional_dependencies:
+          ["types-redis>=4.6.0", "types-python-jose>=3.3.0"]
+        exclude: ^src/migrations/
 
   - repo: https://github.com/asottile/blacken-docs
     rev: 1.16.0
@@ -61,11 +70,11 @@ repos:
 
   - repo: local
     hooks:
-    - id: unit_test
-      name: Unit test
-      language: system
-      entry: uv run pytest
-      pass_filenames: false
-      always_run: true
-      types: [python]
-      stages: [manual]
+      - id: unit_test
+        name: Unit test
+        language: system
+        entry: uv run pytest
+        pass_filenames: false
+        always_run: true
+        types: [python]
+        stages: [manual]

@@ -15,7 +15,7 @@ REDIS_QUEUE_PORT = settings.REDIS_QUEUE_PORT
 
 
 class WorkerSettings:
-    functions = []  # Crop Doctor background tasks registered here as built
+    functions = []  # Ankara background tasks registered here as built
     redis_settings = RedisSettings(host=REDIS_QUEUE_HOST, port=REDIS_QUEUE_PORT)
     on_startup = startup
     on_shutdown = shutdown

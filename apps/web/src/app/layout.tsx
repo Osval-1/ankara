@@ -11,8 +11,8 @@ import { getUserQueryOptions } from '@/lib/auth';
 import '@/styles/globals.css';
 
 export const metadata = {
-  title: 'Cameroon Crop Doctor',
-  description: 'Crop disease diagnosis for smallholder farmers in Cameroon',
+  title: 'Ankara',
+  description: 'Crop disease diagnosis for smallholder farmers',
 };
 
 const RootLayout = async ({ children }: { children: ReactNode }) => {

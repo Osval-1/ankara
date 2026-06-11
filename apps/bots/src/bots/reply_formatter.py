@@ -11,8 +11,8 @@ _CROP_MENU = {
 }
 
 _GREETING = {
-    "fr": "Bonjour ! Je suis Crop Doctor. Envoyez-moi une photo de votre plante malade.",
-    "en": "Hello! I am Crop Doctor. Send me a photo of your sick plant.",
+    "fr": "Bonjour ! Je suis Ankara. Envoyez-moi une photo de votre plante malade.",
+    "en": "Hello! I am Ankara. Send me a photo of your sick plant.",
 }
 
 _SEND_PHOTO = {

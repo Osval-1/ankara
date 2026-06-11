@@ -10,13 +10,13 @@ dev:
 	turbo dev
 
 dev-api:
-	uv run --package crop-doctor-api uvicorn src.app.main:app --reload --port 8000
+	uv run --package ankara-api uvicorn src.app.main:app --reload --port 8000
 
 dev-web:
-	pnpm --filter @crop-doctor/web dev
+	pnpm --filter @ankara/web dev
 
 dev-mobile:
-	pnpm --filter @crop-doctor/mobile start
+	pnpm --filter @ankara/mobile start
 
 # ── Build ──────────────────────────────────────────────────────────────────────
 build:
@@ -42,20 +42,20 @@ test:
 	uv run pytest
 
 test-api:
-	uv run --package crop-doctor-api pytest services/api/tests -v
+	uv run --package ankara-api pytest services/api/tests -v
 
 test-web:
-	pnpm --filter @crop-doctor/web test --run
+	pnpm --filter @ankara/web test --run
 
 # ── Database ───────────────────────────────────────────────────────────────────
 migrate:
-	uv run --package crop-doctor-api alembic -c services/api/src/alembic.ini upgrade head
+	uv run --package ankara-api alembic -c services/api/src/alembic.ini upgrade head
 
 migrate-down:
-	uv run --package crop-doctor-api alembic -c services/api/src/alembic.ini downgrade -1
+	uv run --package ankara-api alembic -c services/api/src/alembic.ini downgrade -1
 
 migrate-new:
-	uv run --package crop-doctor-api alembic -c services/api/src/alembic.ini revision --autogenerate -m "$(name)"
+	uv run --package ankara-api alembic -c services/api/src/alembic.ini revision --autogenerate -m "$(name)"
 
 # ── Docker ─────────────────────────────────────────────────────────────────────
 docker-up:
@@ -92,7 +92,7 @@ clean:
 
 # ── Help ───────────────────────────────────────────────────────────────────────
 help:
-	@echo "Crop Doctor — available make targets:"
+	@echo "Ankara — available make targets:"
 	@echo ""
 	@echo "  install         pnpm install + uv sync"
 	@echo "  dev             start all dev servers (turbo dev)"

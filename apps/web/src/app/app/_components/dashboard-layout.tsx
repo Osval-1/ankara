@@ -30,7 +30,7 @@ const Logo = () => {
     <Link className="flex items-center text-white" href={paths.home.getHref()}>
       <img className="h-8 w-auto" src="/logo.svg" alt="Workflow" />
       <span className="text-sm font-semibold text-white">
-        Crop Doctor
+        Ankara
       </span>
     </Link>
   );
